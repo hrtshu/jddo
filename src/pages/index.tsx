@@ -11,7 +11,11 @@ export default function Home() {
       </Head>
 
       <main>
-        <NewNote />
+        <Box display="flex" justifyContent="center" m={2}>
+          <Box width={1} maxWidth="500px">
+            <NewNote />
+          </Box>
+        </Box>
       </main>
 
       <footer>

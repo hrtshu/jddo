@@ -11,7 +11,7 @@ export class NewNote extends React.Component<NewNoteProps, State> {
     return (
       <Box {...this.props}>
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Note />
+          <Note width={1} mb={1} />
           <Button variant="contained" size="small" disableElevation>Add</Button>
         </Box>
       </Box>
