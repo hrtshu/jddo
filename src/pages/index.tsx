@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import NewNote from '~/components/NewNote'
+import { NewNote } from '~/components'
+import { Box } from '@material-ui/core'
 
 export default function Home() {
   return (

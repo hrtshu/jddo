@@ -1,20 +1,22 @@
 import * as React from 'react'
-import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
-import Note from '~/components/Note'
+import {Box, BoxProps, Button } from '@material-ui/core'
+import { Note } from '~/components'
 
-interface Props {
-}
+export interface NewNoteProps extends BoxProps {}
 
 interface State {}
 
-export default class NewNoteView extends React.Component<Props, State> {
+export class NewNote extends React.Component<NewNoteProps, State> {
   render() {
     return (
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Note />
-        <Button variant="contained" size="small" disableElevation>Add</Button>
+      <Box {...this.props}>
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <Note />
+          <Button variant="contained" size="small" disableElevation>Add</Button>
+        </Box>
       </Box>
     )
   }
 }
+
+export default NewNote
