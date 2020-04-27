@@ -14,7 +14,7 @@ export default function Home() {
         <Box display="flex" justifyContent="center" m={2}>
           <Box width={1} maxWidth="700px">
             <Box display="flex" justifyContent="center">
-              <NewNote width={0.7} maxWidth="400px" mb={2} />
+              <NewNote width={0.7} maxWidth="400px" mb={2} onCreateButtonClick={(subject: string, body: string) => {console.log('New note created:', subject, body)}} />
             </Box>
             <NoteList />
           </Box>
