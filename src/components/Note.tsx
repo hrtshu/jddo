@@ -2,37 +2,47 @@ import * as React from 'react'
 import TextField from '@material-ui/core/TextField'
 import { Box, BoxProps } from '@material-ui/core'
 
-export interface NoteProps extends BoxProps {}
-
-interface State {
-  body: string
+export interface NoteProps extends BoxProps {
+  subject: string,
+  body: string,
+  onSubjectChange(event: React.ChangeEvent<HTMLInputElement>): void,
+  onBodyChange(event: React.ChangeEvent<HTMLInputElement>): void
 }
+
+interface State {}
 
 export class Note extends React.Component<NoteProps, State> {
   constructor(props: any) {
     super(props)
     this.state = {
+      subject: "",
       body: ""
     }
   }
+  public static defaultProps: NoteProps = {
+    subject: undefined,
+    body: undefined,
+    onSubjectChange: undefined,
+    onBodyChange: undefined
+  }
   render() {
+    const { subject, body, onSubjectChange, onBodyChange, ...otherProps } = this.props
     return (
-      <Box width={1} {...this.props}>
+      <Box width={1} border={1} borderColor="primary.main" borderRadius={5} {...otherProps}>
         <TextField
-          variant="outlined"
+          fullWidth
+          value={subject}
+          onChange={onSubjectChange}
+        />
+        <TextField
           multiline
           rows={5}
           fullWidth
-          value={this.state.body}
-          onChange={this.onChange}
+          value={body}
+          onChange={onBodyChange}
         />
       </Box>
     )
-  }
-  onChange = e => {
-    this.setState({
-      body: e.target.value
-    })
   }
 }
 
