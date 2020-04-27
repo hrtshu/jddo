@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { NewNote } from '~/components'
+import { NewNote, NoteList } from '~/components'
 import { Box } from '@material-ui/core'
 
 export default function Home() {
@@ -12,8 +12,11 @@ export default function Home() {
 
       <main>
         <Box display="flex" justifyContent="center" m={2}>
-          <Box width={1} maxWidth="500px">
-            <NewNote />
+          <Box width={1} maxWidth="700px">
+            <Box display="flex" justifyContent="center">
+              <NewNote width={0.7} maxWidth="400px" mb={2} />
+            </Box>
+            <NoteList />
           </Box>
         </Box>
       </main>
