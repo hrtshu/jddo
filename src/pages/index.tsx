@@ -8,6 +8,9 @@ export interface HomeProps {}
 interface State {}
 
 export class Home extends React.Component<HomeProps, State> {
+  onCreateButtonClick = (subject: string, body: string) => {
+    console.log('New note created:', subject, body)
+  }
   render() {
     return (
       <div className="container">
@@ -20,7 +23,7 @@ export class Home extends React.Component<HomeProps, State> {
           <Box display="flex" justifyContent="center" m={2}>
             <Box width={1} maxWidth="700px">
               <Box display="flex" justifyContent="center">
-                <NewNote width={0.7} maxWidth="400px" mb={2} onCreateButtonClick={(subject: string, body: string) => {console.log('New note created:', subject, body)}} />
+                <NewNote width={0.7} maxWidth="400px" mb={2} onCreateButtonClick={this.onCreateButtonClick} />
               </Box>
               <NoteList />
             </Box>

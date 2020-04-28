@@ -3,7 +3,7 @@ import {Box, BoxProps, Button } from '@material-ui/core'
 import { Note } from '~/components'
 
 export interface NewNoteProps extends BoxProps {
-  onCreateButtonClick(subject: string, body: string): void
+  onCreateButtonClick?(subject: string, body: string): void
 }
 
 interface State {
@@ -12,9 +12,6 @@ interface State {
 }
 
 export class NewNote extends React.Component<NewNoteProps, State> {
-  public static defaultProps = {
-    onCreateButtonClick: undefined
-  }
   onSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       subject: e.currentTarget.value
