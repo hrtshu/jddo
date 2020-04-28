@@ -1,32 +1,41 @@
 import * as React from 'react'
 import TextField from '@material-ui/core/TextField'
 import { Box, BoxProps } from '@material-ui/core'
+import * as types from '~/types'
 
 export interface NoteProps extends BoxProps {
-  subject: string,
-  body: string,
-  onSubjectChange?(event: React.ChangeEvent<HTMLInputElement>): void,
-  onBodyChange?(event: React.ChangeEvent<HTMLInputElement>): void
+  note: types.Note,
+  onNoteChange?(note: types.Note): void
 }
 
 interface State {}
 
 export class Note extends React.Component<NoteProps, State> {
+  onSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (this.props.onNoteChange) {
+      this.props.onNoteChange({ ...this.props.note, subject: e.currentTarget.value })
+    }
+  }
+  onBodyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (this.props.onNoteChange) {
+      this.props.onNoteChange({ ...this.props.note, body: e.currentTarget.value })
+    }
+  }
   render() {
-    const { subject, body, onSubjectChange, onBodyChange, ...otherProps } = this.props
+    const { note, onNoteChange, ...otherProps } = this.props
     return (
       <Box width={1} border={1} borderColor="primary.main" borderRadius={5} {...otherProps}>
         <TextField
           fullWidth
-          value={subject}
-          onChange={onSubjectChange}
+          value={note.subject}
+          onChange={this.onSubjectChange}
         />
         <TextField
           multiline
           rows={5}
           fullWidth
-          value={body}
-          onChange={onBodyChange}
+          value={note.body}
+          onChange={this.onBodyChange}
         />
       </Box>
     )

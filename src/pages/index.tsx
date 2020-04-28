@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import { Box } from '@material-ui/core'
+import * as types from '~/types'
 import { NewNote, NoteList } from '~/components'
 
 export interface HomeProps {}
@@ -8,8 +9,8 @@ export interface HomeProps {}
 interface State {}
 
 export class Home extends React.Component<HomeProps, State> {
-  onCreateButtonClick = (subject: string, body: string) => {
-    console.log('New note created:', subject, body)
+  onCreateButtonClick = (note: types.Note) => {
+    console.log('New note created:', note.subject, note.body)
   }
   render() {
     return (

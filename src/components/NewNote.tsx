@@ -1,22 +1,24 @@
 import * as React from 'react'
 import {Box, BoxProps, Button } from '@material-ui/core'
+import * as types from '~/types'
 import { Note } from '~/components'
 
 export interface NewNoteProps extends BoxProps {
-  onCreateButtonClick?(subject: string, body: string): void
+  onCreateButtonClick?(note: types.Note): void
 }
 
 interface State {
-  subject: string,
-  body: string
+  note: types.Note
 }
 
 export class NewNote extends React.Component<NewNoteProps, State> {
   constructor(props: NewNoteProps) {
     super(props)
     this.state = {
-      subject: "",
-      body: ""
+      note: {
+        subject: "",
+        body: ""
+      }
     }
   }
   render() {
@@ -27,16 +29,14 @@ export class NewNote extends React.Component<NewNoteProps, State> {
           <Note
             width={1}
             mb={1}
-            subject={this.state.subject}
-            body={this.state.body}
-            onSubjectChange={(e: React.ChangeEvent<HTMLInputElement>) => {this.setState({ subject: e.currentTarget.value })}}
-            onBodyChange={(e: React.ChangeEvent<HTMLInputElement>) => {this.setState({ body: e.currentTarget.value })}}
+            note={this.state.note}
+            onNoteChange={(note: types.Note) => {this.setState({ note })}}
           />
           <Button
             variant="contained"
             size="small"
             disableElevation
-            onClick={() => onCreateButtonClick(this.state.subject, this.state.body)}
+            onClick={() => onCreateButtonClick(this.state.note)}
           >
             Add
           </Button>
