@@ -16,7 +16,7 @@ export class NoteList extends React.Component<NoteListProps, State> {
           {[0, 1, 2, 3, 4].map(x => {
             return (
               <GridListTile key={x}>
-                <Note />
+                <Note subject="" body="" />
               </GridListTile>
             )
           })}

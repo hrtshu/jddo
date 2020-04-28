@@ -12,22 +12,26 @@ interface State {
 }
 
 export class NewNote extends React.Component<NewNoteProps, State> {
-  onSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      subject: e.currentTarget.value
-    })
-  }
-  onBodyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      body: e.currentTarget.value
-    })
+  constructor(props: NewNoteProps) {
+    super(props)
+    this.state = {
+      subject: "",
+      body: ""
+    }
   }
   render() {
     const { onCreateButtonClick, ...otherProps } = this.props
     return (
       <Box {...otherProps}>
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Note width={1} mb={1} onSubjectChange={this.onSubjectChange} onBodyChange={this.onBodyChange} />
+          <Note
+            width={1}
+            mb={1}
+            subject={this.state.subject}
+            body={this.state.body}
+            onSubjectChange={(e: React.ChangeEvent<HTMLInputElement>) => {this.setState({ subject: e.currentTarget.value })}}
+            onBodyChange={(e: React.ChangeEvent<HTMLInputElement>) => {this.setState({ body: e.currentTarget.value })}}
+          />
           <Button
             variant="contained"
             size="small"
