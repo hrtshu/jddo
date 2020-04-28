@@ -6,10 +6,21 @@ import { NewNote, NoteList } from '~/components'
 
 export interface HomeProps {}
 
-interface State {}
+interface State {
+  notes: types.Note[]
+}
 
 export class Home extends React.Component<HomeProps, State> {
+  constructor(props: HomeProps) {
+    super(props)
+    this.state = {
+      notes: []
+    }
+  }
   onCreateButtonClick = (note: types.Note) => {
+    this.setState({
+      notes: [ note, ...this.state.notes ]
+    })
     console.log('New note created:', note.subject, note.body)
   }
   render() {
@@ -26,7 +37,7 @@ export class Home extends React.Component<HomeProps, State> {
               <Box display="flex" justifyContent="center">
                 <NewNote width={0.7} maxWidth="400px" mb={2} onCreateButtonClick={this.onCreateButtonClick} />
               </Box>
-              <NoteList />
+              <NoteList notes={this.state.notes} />
             </Box>
           </Box>
         </main>

@@ -1,22 +1,25 @@
 import * as React from 'react'
 import { GridList, GridListTile } from '@material-ui/core'
 import { Box, BoxProps } from '@material-ui/core'
+import * as types from '~/types'
 import { Note } from '~/components'
 
-export interface NoteListProps extends BoxProps {}
+export interface NoteListProps extends BoxProps {
+  notes: types.Note[]
+}
 
 interface State {}
 
 export class NoteList extends React.Component<NoteListProps, State> {
   render() {
-    const { ...otherProps } = this.props
+    const { notes, ...otherProps } = this.props
     return (
       <Box {...otherProps}>
         <GridList cols={3} cellHeight="auto">
-          {[0, 1, 2, 3, 4].map(x => {
+          {notes.map((note, idx) => {
             return (
-              <GridListTile key={x}>
-                <Note note={{subject: "", body: ""}} />
+              <GridListTile key={idx}>
+                <Note note={note} />
               </GridListTile>
             )
           })}

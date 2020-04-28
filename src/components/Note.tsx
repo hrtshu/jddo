@@ -13,12 +13,16 @@ interface State {}
 export class Note extends React.Component<NoteProps, State> {
   onSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (this.props.onNoteChange) {
-      this.props.onNoteChange({ ...this.props.note, subject: e.currentTarget.value })
+      let newNote = this.props.note.clone()
+      newNote.subject = e.currentTarget.value
+      this.props.onNoteChange(newNote)
     }
   }
   onBodyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (this.props.onNoteChange) {
-      this.props.onNoteChange({ ...this.props.note, body: e.currentTarget.value })
+      let newNote = this.props.note.clone()
+      newNote.body = e.currentTarget.value
+      this.props.onNoteChange(newNote)
     }
   }
   render() {

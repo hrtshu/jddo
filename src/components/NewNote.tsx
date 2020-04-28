@@ -15,9 +15,16 @@ export class NewNote extends React.Component<NewNoteProps, State> {
   constructor(props: NewNoteProps) {
     super(props)
     this.state = {
-      note: {
-        subject: "",
-        body: ""
+      note: new types.Note()
+    }
+  }
+  onCreateButtonClick = () => {
+    if (!this.state.note.isEmpty()) {
+      if (this.props.onCreateButtonClick) {
+        this.props.onCreateButtonClick(this.state.note)
+        this.setState({
+          note: new types.Note()
+        })
       }
     }
   }
@@ -36,7 +43,7 @@ export class NewNote extends React.Component<NewNoteProps, State> {
             variant="contained"
             size="small"
             disableElevation
-            onClick={() => onCreateButtonClick(this.state.note)}
+            onClick={this.onCreateButtonClick}
           >
             Add
           </Button>
