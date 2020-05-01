@@ -10,6 +10,5 @@ export class Note implements Note {
     }
     clone() {
         return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
-
     }
 }
