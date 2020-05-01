@@ -4,8 +4,9 @@ import { AppProps } from 'next/app'
 import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import theme from '~/theme'
+import withApollo from '~/lib/withApollo'
 
-export default function MyApp(props: AppProps) {
+function MyApp(props: AppProps) {
   const { Component, pageProps } = props
 
   React.useEffect(() => {
@@ -30,3 +31,4 @@ export default function MyApp(props: AppProps) {
     </React.Fragment>
   )
 }
+export default withApollo(MyApp)
