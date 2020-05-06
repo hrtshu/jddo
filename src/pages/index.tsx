@@ -10,9 +10,6 @@ export interface HomeProps {}
 
 const Home = (props: HomeProps) => {
   const onCreateButtonClick = (note: types.Note) => {
-    this.setState({
-      notes: [ note, ...this.state.notes ]
-    })
     console.log('New note created:', note.subject, note.body)
   }
   
@@ -25,7 +22,8 @@ const Home = (props: HomeProps) => {
       }
     }
   `
-  const {loading, error, data } = useQuery(query)
+  
+  const { loading, error, data } = useQuery(query)
   console.log(data)
 
   return (
