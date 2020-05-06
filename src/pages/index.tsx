@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
-import { Box } from '@material-ui/core'
+import { Box, Snackbar } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import * as types from '~/types'
@@ -39,7 +40,12 @@ const Home = (props: HomeProps) => {
             <Box display="flex" justifyContent="center">
               <NewNote width={0.7} maxWidth="400px" mb={2} onCreateButtonClick={onCreateButtonClick} />
             </Box>
-            { loading ? 'Loading...' : <NoteList notes={data.notes} /> }
+            <Snackbar open={!!error}>
+              <Alert severity="error">{ /* TODO エラー内容に応じて分岐 */ }
+                サーバとの接続に失敗しました。リロードしてください。
+              </Alert>
+            </Snackbar>
+            { error ? "" : (loading ? 'Loading...' : <NoteList notes={data.notes} />) }
           </Box>
         </Box>
       </main>
