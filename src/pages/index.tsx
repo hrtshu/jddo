@@ -2,30 +2,44 @@ import React from 'react'
 import Head from 'next/head'
 import { Box, Snackbar } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import * as types from '~/types'
 import { NewNote, NoteList } from '~/components'
 
 export interface HomeProps {}
-
-const Home = (props: HomeProps) => {
-  const onCreateButtonClick = (note: types.Note) => {
-    console.log('New note created:', note.subject, note.body)
-  }
   
-  const query = gql`
-    query {
-      notes {
-        id,
-        subject,
+const FETCH_NOTES = gql`
+  query {
+    notes {
+      id,
+      subject,
+      body
+    }
+  }
+`
+
+const CREATE_NOTE = gql`
+  mutation CreateNote($subject: String!, $body: String!) {
+    createNote(input: {subject: $subject, body: $body}) {
+      note {
+        id
+        subject
         body
       }
     }
-  `
+  }
+`
+
+const Home = (props: HomeProps) => {
+  const onCreateButtonClick = (note: types.Note) => {
+    createNote({ variables: { subject: note.subject, body: note.body } })
+    console.log('New note created:', note.subject, note.body)
+  }
   
-  const { loading, error, data } = useQuery(query)
-  console.log(data)
+  const [createNote, res] = useMutation(CREATE_NOTE)
+  const { loading, error, data } = useQuery(FETCH_NOTES)
+  // TODO resのloadingやerrorのハンドリング
 
   return (
     <div className="container">
