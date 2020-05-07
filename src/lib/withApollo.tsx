@@ -7,7 +7,7 @@ export default withApollo(
     return new ApolloClient({
       uri: process.env['GRAPHQL_ENDPOINT'],
       cache: new InMemoryCache().restore(initialState || {})
-    });
+    })
   },
   {
     render: ({ Page, props }) => {
@@ -15,7 +15,7 @@ export default withApollo(
         <ApolloProvider client={props.apollo}>
           <Page {...props} />
         </ApolloProvider>
-      );
+      )
     }
   }
-);
+)
