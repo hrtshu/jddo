@@ -29,7 +29,7 @@ const NoteList = withWidth()((props: NoteListProps) => {
 
   return (
     <Box {...otherProps}>
-      <GridList cols={getCols()} cellHeight="auto">
+      <GridList cols={getCols()} cellHeight="auto" spacing={15}>
         {notes.map((note, idx) => {
           return (
             <GridListTile key={idx}>
