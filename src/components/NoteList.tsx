@@ -1,32 +1,46 @@
 import * as React from 'react'
-import { GridList, GridListTile } from '@material-ui/core'
-import { Box, BoxProps } from '@material-ui/core'
+import { Box, BoxProps, GridList, GridListTile, withWidth, WithWidth, isWidthUp } from '@material-ui/core'
 import * as types from '~/types'
 import { Note } from '~/components'
 
-export interface NoteListProps extends BoxProps {
+export type NoteListProps = {
   notes: types.Note[]
-}
+} & BoxProps & WithWidth
 
-interface State {}
+const NoteList = withWidth()((props: NoteListProps) => {
+  const { notes, width, ...otherProps } = props
 
-export class NoteList extends React.Component<NoteListProps, State> {
-  render() {
-    const { notes, ...otherProps } = this.props
-    return (
-      <Box {...otherProps}>
-        <GridList cols={3} cellHeight="auto">
-          {notes.map((note, idx) => {
-            return (
-              <GridListTile key={idx}>
-                <Note note={note} />
-              </GridListTile>
-            )
-          })}
-        </GridList>
-      </Box>
-    )
+  const getCols = () => {
+    switch (true) {
+      case isWidthUp('xl', width):
+        return 6
+      case isWidthUp('lg', width):
+        return 5
+      case isWidthUp('md', width):
+        return 4
+      case isWidthUp('sm', width):
+        return 3
+      case isWidthUp('xs', width):
+        return 2
+      default:
+        return 1
+    }
   }
-}
 
+  return (
+    <Box {...otherProps}>
+      <GridList cols={getCols()} cellHeight="auto">
+        {notes.map((note, idx) => {
+          return (
+            <GridListTile key={idx}>
+              <Note note={note} />
+            </GridListTile>
+          )
+        })}
+      </GridList>
+    </Box>
+  )
+})
+
+export { NoteList }
 export default NoteList

@@ -77,7 +77,7 @@ const Home = () => {
         
         <Box className={classes.toolbar} /> {/* AppBarはfixedされているのでその分だけ高さを下げる用 */}
         <Box display="flex" justifyContent="center" m={2}>
-          <Box width={1} maxWidth="700px">
+          <Box width={1}>
             <Box display="flex" justifyContent="center">
               <NewNote width={0.7} maxWidth="400px" mb={2} onCreateButtonClick={onCreateButtonClick} />
             </Box>
