@@ -4,11 +4,12 @@ import * as types from '~/types'
 import { Note } from '~/components'
 
 export type NoteListProps = {
-  notes: types.Note[]
+  notes: types.Note[],
+  onNoteClick?(note: types.Note): void
 } & BoxProps & WithWidth
 
 const NoteList = withWidth()((props: NoteListProps) => {
-  const { notes, width, ...otherProps } = props
+  const { notes, onNoteClick, width, ...otherProps } = props
 
   const getCols = () => {
     switch (true) {
@@ -32,8 +33,8 @@ const NoteList = withWidth()((props: NoteListProps) => {
       <GridList cols={getCols()} cellHeight="auto" spacing={15}>
         {notes.map((note, idx) => {
           return (
-            <GridListTile key={idx}>
-              <Note note={note} />
+            <GridListTile key={idx}> {/* TODO keyをnote.idに変える */}
+              <Note note={note} onClick={() => onNoteClick && onNoteClick(note)} />
             </GridListTile>
           )
         })}

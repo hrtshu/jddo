@@ -81,12 +81,12 @@ const Home = () => {
             <Box display="flex" justifyContent="center" mb={2}>
               <NewNote width={0.7} maxWidth="400px" mb={2} onCreateButtonClick={onCreateButtonClick} />
             </Box>
+            { queryError || queryLoading ? "" : <NoteList notes={data.notes} onNoteClick={note => console.log(note)} /> }
             <Snackbar open={!!queryError}>
               <Alert severity="error"> { /* TODO エラー内容に応じて分岐 */ }
                 サーバとの接続に失敗しました。リロードしてください。
               </Alert>
             </Snackbar>
-            { queryError || queryLoading ? "" : <NoteList notes={data.notes} /> }
           </Box>
         </Box>
       </main>
