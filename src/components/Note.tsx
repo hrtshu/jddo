@@ -5,12 +5,16 @@ import * as types from '~/types'
 
 export interface NoteProps extends BoxProps {
   note: types.Note,
-  onNoteChange?(note: types.Note): void
+  onNoteChange?(note: types.Note): void,
+  readOnly?: boolean
 }
 
 interface State {}
 
 export class Note extends React.Component<NoteProps, State> {
+  static defaultProps = {
+    readOnly: false
+  }
   onSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (this.props.onNoteChange) {
       let newNote = this.props.note.clone()
@@ -26,13 +30,14 @@ export class Note extends React.Component<NoteProps, State> {
     }
   }
   render() {
-    const { note, onNoteChange, ...otherProps } = this.props
+    const { note, onNoteChange, readOnly, ...otherProps } = this.props
     return (
       <Box width={1} border={1} borderColor="primary.main" borderRadius={5} {...otherProps}>
         <TextField
           fullWidth
           value={note.subject}
           onChange={this.onSubjectChange}
+          InputProps={{ readOnly }}
         />
         <TextField
           multiline
@@ -40,6 +45,7 @@ export class Note extends React.Component<NoteProps, State> {
           fullWidth
           value={note.body}
           onChange={this.onBodyChange}
+          InputProps={{ readOnly }}
         />
       </Box>
     )

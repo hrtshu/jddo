@@ -34,7 +34,7 @@ const NoteList = withWidth()((props: NoteListProps) => {
         {notes.map((note, idx) => {
           return (
             <GridListTile key={idx}> {/* TODO keyをnote.idに変える */}
-              <Note note={note} onClick={() => onNoteClick && onNoteClick(note)} />
+              <Note note={note} readOnly={true} onClick={() => onNoteClick && onNoteClick(note)} />
             </GridListTile>
           )
         })}
