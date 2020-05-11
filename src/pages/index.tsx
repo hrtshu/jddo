@@ -19,7 +19,7 @@ const FETCH_NOTES = gql`
 `
 
 const CREATE_NOTE = gql`
-  mutation CreateNote($note: NewNote!) {
+  mutation CreateNote($note: NoteInput!) {
     createNote(input: {note: $note}) {
       note {
         id
