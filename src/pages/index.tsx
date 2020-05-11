@@ -7,12 +7,12 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import * as types from '~/types'
 import { NewNote, NoteList } from '~/components'
-  
+
 const FETCH_NOTES = gql`
   query {
     notes {
-      id,
-      subject,
+      id
+      subject
       body
     }
   }
