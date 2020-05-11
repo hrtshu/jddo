@@ -19,8 +19,8 @@ const FETCH_NOTES = gql`
 `
 
 const CREATE_NOTE = gql`
-  mutation CreateNote($subject: String!, $body: String!) {
-    createNote(input: {subject: $subject, body: $body}) {
+  mutation CreateNote($note: NewNote!) {
+    createNote(input: {note: $note}) {
       note {
         id
         subject
@@ -29,6 +29,7 @@ const CREATE_NOTE = gql`
     }
   }
 `
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -45,15 +46,16 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const Home = () => {
-  const onCreateButtonClick = (note: types.Note) => {
-    createNote({ variables: { subject: note.subject, body: note.body } })
-    console.log('New note created:', note.subject, note.body)
-  }
-  
   const classes = useStyles();
   const [createNote, { loading: mutationLoading, error: mutationError }] = useMutation(CREATE_NOTE)
   const { loading: queryLoading, error: queryError, data } = useQuery<{ notes: types.Note[] }, {}>(FETCH_NOTES)
   // TODO mutationErrorのハンドリング
+  // TODO types.Noteと型指定しているにも関わらず、まだtypes.Noteにはidプロパティが無いので作る
+
+  const onCreateButtonClick = (note: types.Note) => {
+    createNote({ variables: { note } })
+    console.log('New note created:', note.subject, note.body)
+  }
 
   return (
     <div className="container">
