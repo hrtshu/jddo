@@ -1,12 +1,11 @@
 import React from 'react'
 import Head from 'next/head'
-import { Box, Snackbar, CircularProgress, AppBar, Toolbar, IconButton, Typography, makeStyles, createStyles, Theme, CssBaseline } from '@material-ui/core'
+import { Box, Snackbar, makeStyles, createStyles, Theme } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
-import { Menu as MenuIcon, Done as DoneIcon } from '@material-ui/icons'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import * as types from '~/types'
-import { NewNote, NoteList } from '~/components'
+import { NewNote, NoteList, AppBar } from '~/components'
 
 const FETCH_NOTES = gql`
   query {
@@ -35,12 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       flexGrow: 1,
     },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
     toolbar: theme.mixins.toolbar
   }),
 )
@@ -65,17 +58,7 @@ const Home = () => {
       </Head>
 
       <main className={classes.root}>
-        <AppBar position="fixed">
-          <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              JDDO
-            </Typography>
-            { queryLoading || mutationLoading ? <CircularProgress size={30} color="secondary" /> : <DoneIcon /> }
-          </Toolbar>
-        </AppBar>
+        <AppBar position="fixed" loading={queryLoading || mutationLoading} />
         
         <Box className={classes.toolbar} /> {/* AppBarはfixedされているのでその分だけ高さを下げる用 */}
         <Box display="flex" justifyContent="center" m={2}>
