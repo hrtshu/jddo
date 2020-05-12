@@ -3,13 +3,17 @@ import { Box, BoxProps, GridList, GridListTile, withWidth, WithWidth, isWidthUp 
 import * as types from '~/types'
 import { Note } from '~/components'
 
-export type NoteListProps = {
+type NoteListCoreProps = {
   notes: types.Note[],
   onNoteClick?(note: types.Note): void
-} & BoxProps & WithWidth
+}
 
-const NoteList = withWidth()((props: NoteListProps) => {
-  const { notes, onNoteClick, width, ...otherProps } = props
+type NoteListInnnerProps = NoteListCoreProps & WithWidth
+
+// WithWidthのwidthとBoxPropsのwidthが競合しないようにするためのインナークラス
+// ただし、NoteListへのBoxPropsはInnnerのBoxには引き継がれない
+const NoteListInner = withWidth()((props: NoteListInnnerProps) => {
+  const { notes, onNoteClick, width } = props
 
   const getCols = () => {
     switch (true) {
@@ -29,7 +33,7 @@ const NoteList = withWidth()((props: NoteListProps) => {
   }
 
   return (
-    <Box {...otherProps}>
+    <Box>
       <GridList cols={getCols()} cellHeight="auto" spacing={15}>
         {notes.map((note, idx) => {
           return (
@@ -43,5 +47,16 @@ const NoteList = withWidth()((props: NoteListProps) => {
   )
 })
 
-export { NoteList }
+export type NoteListProps = NoteListCoreProps & BoxProps
+
+export const NoteList = (props: NoteListProps) => {
+  const { notes, onNoteClick, ...otherProps } = props
+
+  return (
+    <Box {...otherProps}>
+      <NoteListInner notes={notes} onNoteClick={onNoteClick} />
+    </Box>
+  )
+}
+
 export default NoteList
