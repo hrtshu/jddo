@@ -12,3 +12,7 @@ export class Note implements Note {
         return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
     }
 }
+
+export type OnNoteChange = {
+    onNoteChange?: (note: Note) => void,
+}

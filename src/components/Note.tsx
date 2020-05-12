@@ -3,11 +3,10 @@ import TextField from '@material-ui/core/TextField'
 import { Box, BoxProps } from '@material-ui/core'
 import * as types from '~/types'
 
-export interface NoteProps extends BoxProps {
+export type NoteProps = {
   note: types.Note,
-  onNoteChange?(note: types.Note): void,
   readOnly?: boolean
-}
+} & types.OnNoteChange & BoxProps
 
 interface State {}
 
