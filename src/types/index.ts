@@ -1,4 +1,4 @@
-export class Note implements Note {
+export class Note {
     subject: string
     body: string
     constructor(subject = "", body = "") {
