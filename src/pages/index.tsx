@@ -43,7 +43,6 @@ const Home = () => {
   const [createNote, { loading: mutationLoading, error: mutationError }] = useMutation(CREATE_NOTE)
   const { loading: queryLoading, error: queryError, data } = useQuery<{ notes: types.Note[] }, {}>(FETCH_NOTES)
   // TODO mutationErrorのハンドリング
-  // TODO types.Noteと型指定しているにも関わらず、まだtypes.Noteにはidプロパティが無いので作る
 
   const onCreateButtonClick = (note: types.Note) => {
     createNote({ variables: { note } })

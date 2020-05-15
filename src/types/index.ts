@@ -1,7 +1,9 @@
 export class Note {
+    id: string | undefined // TODO 型はstringで良いか？
     subject: string
     body: string
-    constructor(subject = "", body = "") {
+    constructor({ id = undefined, subject = "", body = "" } = {}) {
+        this.id = id
         this.subject = subject
         this.body = body
     }
