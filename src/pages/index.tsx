@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const Home = () => {
-  const classes = useStyles();
-  const [createNote, { loading: mutationLoading, error: mutationError }] = useMutation(CREATE_NOTE)
-  const { loading: queryLoading, error: queryError, data } = useQuery<{ notes: types.Note[] }, {}>(FETCH_NOTES)
-  // TODO mutationErrorのハンドリング
+  const classes = useStyles()
+  const [createNote, { loading: creatingNote, error: noteCreationError }] = useMutation(CREATE_NOTE)
+  const { loading: fetchingNotes, error: noteFetchError, data } = useQuery<{ notes: types.Note[] }, {}>(FETCH_NOTES)
+  // TODO noteCreationErrorのハンドリング
 
   const onCreateButtonClick = (note: types.Note) => {
     createNote({ variables: { note } })
@@ -57,7 +57,7 @@ const Home = () => {
       </Head>
 
       <main className={classes.root}>
-        <AppBar position="fixed" loading={queryLoading || mutationLoading} />
+        <AppBar position="fixed" loading={fetchingNotes || creatingNote} />
         
         <Box className={classes.toolbar} /> {/* AppBarはfixedされているのでその分だけ高さを下げる用 */}
         <Box display="flex" justifyContent="center" m={2}>
@@ -65,8 +65,8 @@ const Home = () => {
             <Box display="flex" justifyContent="center" mb={2}>
               <NewNote width={0.7} maxWidth="400px" mb={2} onCreateButtonClick={onCreateButtonClick} />
             </Box>
-            { queryError || queryLoading ? "" : <NoteList notes={!data ? [] : data.notes} onNoteClick={note => console.log(note)} />}
-            <Snackbar open={!!queryError}>
+            { noteFetchError || fetchingNotes ? "" : <NoteList notes={!data ? [] : data.notes} onNoteClick={note => console.log(note)} />}
+            <Snackbar open={!!noteFetchError}>
               <Alert severity="error"> { /* TODO エラー内容に応じて分岐 */ }
                 サーバとの接続に失敗しました。リロードしてください。
               </Alert>
