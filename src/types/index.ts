@@ -25,3 +25,8 @@ export type OnNoteChange = {
 export type ReadOnly = {
     readOnly?: boolean
 }
+
+export type NoteEditor = {
+    note: Note,
+    onComplete?: () => void
+} & OnNoteChange & ReadOnly

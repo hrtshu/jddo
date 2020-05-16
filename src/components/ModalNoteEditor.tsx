@@ -3,10 +3,8 @@ import * as types from '~/types'
 import { Note } from '~/components'
 
 export type ModalNoteEditorProps = {
-  note: types.Note,
   open: ModalProps["open"],
-  onClose?: ModalProps["onClose"],
-} & types.OnNoteChange & types.ReadOnly
+} & types.NoteEditor
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -18,11 +16,11 @@ const useStyles = makeStyles(() =>
   }),
 )
 
-export const ModalNoteEditor = ({ note, open, onClose, onNoteChange, readOnly = false }: ModalNoteEditorProps) => {
+export const ModalNoteEditor = ({ note, onComplete, onNoteChange, readOnly = false, open }: ModalNoteEditorProps) => {
   const classes = useStyles()
 
   return (
-    <Modal className={classes.modal} open={open} onClose={onClose}>
+    <Modal className={classes.modal} open={open} onClose={() => {onComplete && onComplete()}}>
       <Box p={2} bgcolor="white">
         <Note note={note} onNoteChange={onNoteChange} readOnly={readOnly} />
       </Box>
