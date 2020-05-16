@@ -4,9 +4,8 @@ import { Box, BoxProps } from '@material-ui/core'
 import * as types from '~/types'
 
 export type NoteProps = {
-  note: types.Note,
-  readOnly?: boolean
-} & types.OnNoteChange & BoxProps
+  note: types.Note
+} & types.OnNoteChange & types.ReadOnly & BoxProps
 
 interface State {}
 

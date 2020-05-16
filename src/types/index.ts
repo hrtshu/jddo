@@ -18,3 +18,7 @@ export class Note {
 export type OnNoteChange = {
     onNoteChange?: (note: Note) => void,
 }
+
+export type ReadOnly = {
+    readOnly?: boolean
+}
