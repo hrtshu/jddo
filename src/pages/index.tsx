@@ -52,13 +52,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Home = () => {
   const classes = useStyles()
+
   const [noteBeforeChange, setNoteBeforeChange] = useState(new types.Note())
   const [noteAfterChange, setNoteAfterChange] = useState(new types.Note())
-  const [readOnlyEditor, setReadOnlyEditor] = useState(false)
   const [openEditor, setOpenEditor] = useState(false)
+  const [readOnlyEditor, setReadOnlyEditor] = useState(false)
+
+  const { loading: fetchingNotes, error: noteFetchError, data } = useQuery(FETCH_NOTES)
   const [createNote, { loading: creatingNote, error: noteCreationError }] = useMutation(CREATE_NOTE)
   const [updateNote, { loading: updatingNote, error: noteUpdatingError }] = useMutation(UPDATE_NOTE)
-  const { loading: fetchingNotes, error: noteFetchError, data } = useQuery(FETCH_NOTES)
   // TODO noteCreationError, noteUpdatingErrorのハンドリング
 
   // useQueryで取得したメモデータをtypes.Noteでインスタンス化
