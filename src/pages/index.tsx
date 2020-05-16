@@ -16,7 +16,6 @@ const FETCH_NOTES = gql`
     }
   }
 `
-
 const CREATE_NOTE = gql`
   mutation CreateNote($note: NoteInput!) {
     createNote(input: {note: $note}) {
@@ -28,7 +27,6 @@ const CREATE_NOTE = gql`
     }
   }
 `
-
 const UPDATE_NOTE = gql`
   mutation UpdateNote($note: NoteInput!) {
     updateNote(input: {note: $note}) {
@@ -52,40 +50,78 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Home = () => {
   const classes = useStyles()
+
+  // メモ作成ロジッのステート
+  const [newNote, setNewNote] = useState(new types.Note())
+  const [readOnlyNewNote, setReadOnlyNewNote] = useState(false)
+  // メモ更新ロジックのステート
   const [noteBeforeChange, setNoteBeforeChange] = useState(new types.Note())
   const [noteAfterChange, setNoteAfterChange] = useState(new types.Note())
   const [openEditor, setOpenEditor] = useState(false)
   const [readOnlyEditor, setReadOnlyEditor] = useState(false)
+  // その他のステート
+  const [error, setError] = useState<string | undefined>(undefined) // 主にcreateNoteとupdateNoteのエラー処理用
+  // GraphQL
   const { loading: fetchingNotes, error: noteFetchError, data } = useQuery(FETCH_NOTES)
-  const [createNote, { loading: creatingNote, error: noteCreationError }] = useMutation(CREATE_NOTE)
-  const [updateNote, { loading: updatingNote, error: noteUpdatingError }] = useMutation(UPDATE_NOTE)
+  const [createNote, { loading: creatingNote }] = useMutation(CREATE_NOTE)
+  const [updateNote, { loading: updatingNote }] = useMutation(UPDATE_NOTE)
 
   // useQueryで取得したメモデータをtypes.Noteでインスタンス化
   let notes: types.Note[] = data && data.notes ? data.notes.map((n: any) => new types.Note(n)) : []
 
-  const onCreateButtonClick = (note: types.Note) => {
-    createNote({ variables: { note } })
-    console.log('note created:', note.subject, note.body)
+  // メモ作成ロジックのコールバック用の関数
+  const onNewNoteChange = (note: types.Note) => {
+    setNewNote(note)
   }
+  const onCreateButtonClick = async () => {
+    setReadOnlyNewNote(true)
+    setError(undefined)
+    if (!newNote.isEmpty()) {
+      try {
+        const res = await createNote({ variables: { note: newNote } })
+        if (res && !res.errors) {
+          console.log('note created:', newNote.subject, newNote.body)
+          setNewNote(new types.Note())
+        } else {
+          setError("メモの作成に失敗しました。再度試してください。")
+        }
+      } catch (e) {
+        setError("メモの作成に失敗しました。再度試してください。")
+      }
+    }
+    setReadOnlyNewNote(false)
+  }
+  // メモ更新ロジックのコールバック用の関数
   const onNoteClick = (note: types.Note) => {
     setNoteBeforeChange(note)
     setNoteAfterChange(note)
     setReadOnlyEditor(false)
     setOpenEditor(true)
   }
-  const onNoteEditorClose = () => {
-    setReadOnlyEditor(true)
-    if (!noteBeforeChange.equals(noteAfterChange)) {
-      updateNote({ variables: { note: noteAfterChange } })
-      console.log('note updated:', noteAfterChange.id, noteAfterChange.subject, noteAfterChange.body)
-    }
-    setOpenEditor(false)
-    setReadOnlyEditor(false)
-  }
   const onModalNoteChange = (note: types.Note) => {
     setNoteAfterChange(note)
   }
-
+  const onNoteEditorClose = async () => {
+    setReadOnlyEditor(true)
+    setError(undefined)
+    if (!noteBeforeChange.equals(noteAfterChange)) {
+      try {
+        const res = await updateNote({ variables: { note: noteAfterChange } })
+        if (res && !res.errors) {
+          console.log('note updated:', noteAfterChange.id, noteAfterChange.subject, noteAfterChange.body)
+          setOpenEditor(false)
+        } else {
+          setError("メモの更新に失敗しました。再度試してください。")
+        }
+      } catch (e) {
+        setError("メモの更新に失敗しました。再度試してください。")
+      }
+    } else {
+      setOpenEditor(false)
+    }
+    setReadOnlyEditor(false)
+  }
+  // computed的な関数
   const loading = () => {
     return fetchingNotes || creatingNote || updatingNote
   }
@@ -93,16 +129,14 @@ const Home = () => {
     return !noteFetchError && !fetchingNotes
   }
   const errorOccurred = () => {
-    return !!noteFetchError || !!noteCreationError || !!noteUpdatingError
+    return !!noteFetchError || !!error
   }
-  const errorMessage = () => {
+  const errorMessage = (): string => {
     switch (true) {
+      case error !== undefined:
+        return error as string; // errorの型はstring | undefinedだが、すぐ上でerrorがundefinedでないことを判定しているためここでは必ずstringとなる
       case !!noteFetchError:
         return "サーバからのメモデータの取得に失敗しました。リロードしてください。"
-      case !!noteCreationError:
-        return "メモの作成に失敗しました。再度試してください。"
-      case !!noteUpdatingError:
-        return "メモの更新に失敗しました。再度試してください。"
     }
     return ""
   }
@@ -119,7 +153,7 @@ const Home = () => {
           note={noteAfterChange}
           onNoteChange={onModalNoteChange}
           open={openEditor}
-          onClose={onNoteEditorClose}
+          onComplete={onNoteEditorClose}
           readOnly={readOnlyEditor} />
 
         <AppBar position="fixed" loading={loading()} />
@@ -128,12 +162,18 @@ const Home = () => {
         <Box display="flex" justifyContent="center" m={2}>
           <Box width={1}>
             <Box display="flex" justifyContent="center" mb={2}>
-              <NewNote width={0.7} maxWidth="400px" mb={2} onCreateButtonClick={onCreateButtonClick} />
-              {/* TODO maxWidthをレスポンシブにする */}
+              <NewNote
+                width={0.7}
+                maxWidth="400px" // レスポンシブにする
+                mb={2}
+                note={newNote}
+                onComplete={onCreateButtonClick}
+                onNoteChange={onNewNoteChange}
+                readOnly={readOnlyNewNote} />
             </Box>
             { fetchedNotes() ? <NoteList notes={notes} onNoteClick={onNoteClick} /> : "" }
             <Snackbar open={errorOccurred()}>
-              <Alert severity="error"> { /* TODO エラー内容に応じて分岐 */ }
+              <Alert severity="error">
                 { errorMessage() }
               </Alert>
             </Snackbar>
