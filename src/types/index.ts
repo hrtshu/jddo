@@ -13,6 +13,9 @@ export class Note {
     clone() {
         return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
     }
+    equals(other: Note) {
+        return this.subject === other.subject && this.body === other.body
+    }
 }
 
 export type OnNoteChange = {
