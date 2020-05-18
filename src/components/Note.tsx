@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, BoxProps, TextField } from '@material-ui/core'
+import { Box, BoxProps, TextField, Card, CardContent } from '@material-ui/core'
 import * as types from '~/types'
 
 export type NoteProps = {
@@ -22,21 +22,27 @@ export const Note = ({ note, onNoteChange, readOnly = false, ...otherProps }: No
     }
   }
   return (
-    <Box width={1} border={1} borderColor="primary.main" borderRadius={5} {...otherProps}>
-      <TextField
-        fullWidth
-        value={note.subject}
-        onChange={onSubjectChange}
-        InputProps={{ readOnly }}
-      />
-      <TextField
-        multiline
-        rows={5}
-        fullWidth
-        value={note.body}
-        onChange={onBodyChange}
-        InputProps={{ readOnly }}
-      />
+    <Box width={1} p={0.15} {...otherProps}>
+      <Card>
+        <CardContent>
+          <TextField
+            placeholder="Title"
+            fullWidth
+            value={note.subject}
+            onChange={onSubjectChange}
+            InputProps={{ readOnly }}
+          />
+          <TextField
+            placeholder="Take a note..."
+            multiline
+            rows={5}
+            fullWidth
+            value={note.body}
+            onChange={onBodyChange}
+            InputProps={{ readOnly }}
+          />
+        </CardContent>
+      </Card>
     </Box>
   )
 }
