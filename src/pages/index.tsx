@@ -68,6 +68,8 @@ const Home = () => {
 
   // useQueryで取得したメモデータをtypes.Noteでインスタンス化
   const notes: types.Note[] = data && data.notes ? data.notes.map((n: any) => new types.Note(n)) : []
+  // メモの順序を反転
+  notes.reverse() // TODO クライアント側のここでこの方法でやるのがベストか？
 
   // メモ作成ロジックのコールバック用の関数
   const onNewNoteChange = (note: types.Note) => {
