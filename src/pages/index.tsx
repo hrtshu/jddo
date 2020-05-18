@@ -67,7 +67,7 @@ const Home = () => {
   const [updateNote, { loading: updatingNote }] = useMutation(UPDATE_NOTE)
 
   // useQueryで取得したメモデータをtypes.Noteでインスタンス化
-  let notes: types.Note[] = data && data.notes ? data.notes.map((n: any) => new types.Note(n)) : []
+  const notes: types.Note[] = data && data.notes ? data.notes.map((n: any) => new types.Note(n)) : []
 
   // メモ作成ロジックのコールバック用の関数
   const onNewNoteChange = (note: types.Note) => {
