@@ -62,7 +62,7 @@ const Home = () => {
   // その他のステート
   const [error, setError] = useState<string | undefined>(undefined) // 主にcreateNoteとupdateNoteのエラー処理用
   // GraphQL
-  const { loading: fetchingNotes, error: noteFetchError, data } = useQuery(FETCH_NOTES)
+  const { loading: fetchingNotes, error: noteFetchError, data, refetch: refetchNotes } = useQuery(FETCH_NOTES)
   const [createNote, { loading: creatingNote }] = useMutation(CREATE_NOTE)
   const [updateNote, { loading: updatingNote }] = useMutation(UPDATE_NOTE)
 
@@ -84,6 +84,7 @@ const Home = () => {
         if (res && !res.errors) {
           console.log('note created:', newNote.subject, newNote.body)
           setNewNote(new types.Note())
+          refetchNotes()
         } else {
           setError("メモの作成に失敗しました。再度試してください。")
         }
