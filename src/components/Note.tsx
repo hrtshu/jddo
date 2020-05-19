@@ -1,12 +1,13 @@
 import * as React from 'react'
-import { Box, BoxProps, Card, CardContent, Typography } from '@material-ui/core'
+import { Box, BoxProps, Card, CardContent, Typography, CardActions, IconButton } from '@material-ui/core'
 import * as types from '~/types'
+import { Delete as DeleteIcon } from '@material-ui/icons'
 
 export type NoteProps = {
   note: types.Note
-} & BoxProps
+} & types.OnDeleteButtonClick & BoxProps
 
-export const Note = ({ note, ...otherProps }: NoteProps) => {
+export const Note = ({ note, onDeleteButtonClick, ...otherProps }: NoteProps) => {
   return (
     <Box width={1} p={0.15} {...otherProps}>
       <Card>
@@ -18,6 +19,11 @@ export const Note = ({ note, ...otherProps }: NoteProps) => {
             {note.body}
           </Typography>
         </CardContent>
+        <CardActions>
+          <IconButton size="small" onClick={() => { onDeleteButtonClick && onDeleteButtonClick(note) }}>
+            <DeleteIcon />
+          </IconButton>
+        </CardActions>
       </Card>
     </Box>
   )

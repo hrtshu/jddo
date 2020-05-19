@@ -30,3 +30,7 @@ export type NoteEditor = {
     note: Note,
     onComplete?: () => void
 } & OnNoteChange & ReadOnly
+
+export type OnDeleteButtonClick = {
+    onDeleteButtonClick?: (note: Note) => void
+}
