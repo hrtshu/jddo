@@ -84,7 +84,7 @@ const Home = () => {
         if (res && !res.errors) {
           console.log('note created:', newNote.subject, newNote.body)
           setNewNote(new types.Note())
-          refetchNotes()
+          await refetchNotes()
         } else {
           setError("メモの作成に失敗しました。再度試してください。")
         }
