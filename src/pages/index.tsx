@@ -24,6 +24,7 @@ const CREATE_NOTE = gql`
         subject
         body
       }
+      errors
     }
   }
 `
@@ -35,6 +36,7 @@ const UPDATE_NOTE = gql`
         subject
         body
       }
+      errors
     }
   }
 `
@@ -89,12 +91,12 @@ const Home = () => {
     if (!newNote.isEmpty()) {
       try {
         const res = await createNote({ variables: { note: newNote } })
-        if (res && !res.errors) {
+        if (!res?.errors && !res.data.createNote?.errors) {
           console.log('note created:', newNote.subject, newNote.body)
           setNewNote(new types.Note())
           await refetchNotes()
         } else {
-          setError("メモの作成に失敗しました。再度試してください。")
+          setError("メモの作成に失敗しました。再度試してください。") // TODO エラーメッセージの一元管理
         }
       } catch (e) {
         setError("メモの作成に失敗しました。再度試してください。")
@@ -118,7 +120,7 @@ const Home = () => {
     if (!noteBeforeChange.equals(noteAfterChange)) {
       try {
         const res = await updateNote({ variables: { note: noteAfterChange } })
-        if (res && !res.errors) {
+        if (!res?.errors && !res.data.updateNote?.errors) {
           console.log('note updated:', noteAfterChange.id, noteAfterChange.subject, noteAfterChange.body)
           setOpenEditor(false)
         } else {
@@ -136,7 +138,7 @@ const Home = () => {
   const onDeleteButtonClick = async (note: types.Note) => {
     try {
       const res = await deleteNote({ variables: { id: note.id } })
-      if (res && !res.errors) {
+      if (!res?.errors && !res.data.deleteNote?.errors) {
         console.log("note deleted:", note.id)
         await refetchNotes()
       } else {
