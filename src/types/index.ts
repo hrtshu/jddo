@@ -31,6 +31,10 @@ export type NoteEditor = {
     onComplete?: () => void
 } & OnNoteChange & ReadOnly
 
+export type OnNoteClick = {
+    onNoteClick?: (note: Note) => void
+}
+
 export type OnDeleteButtonClick = {
     onDeleteButtonClick?: (note: Note) => void
 }

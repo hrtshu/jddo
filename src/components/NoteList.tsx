@@ -4,9 +4,8 @@ import * as types from '~/types'
 import { Note } from '~/components'
 
 type NoteListCoreProps = {
-  notes: types.Note[],
-  onNoteClick?(note: types.Note): void
-} & types.OnDeleteButtonClick
+  notes: types.Note[]
+} & types.OnNoteClick & types.OnDeleteButtonClick
 
 type NoteListInnnerProps = NoteListCoreProps & WithWidth
 
@@ -37,7 +36,7 @@ const NoteListInner = withWidth()(({ notes, onNoteClick, onDeleteButtonClick, wi
         {notes.map(note => {
           return (
             <GridListTile key={note.id}>
-              <Note note={note} onClick={() => onNoteClick && onNoteClick(note)} onDeleteButtonClick={onDeleteButtonClick} />
+              <Note note={note} onNoteClick={onNoteClick} onDeleteButtonClick={onDeleteButtonClick} />
             </GridListTile>
           )
         })}

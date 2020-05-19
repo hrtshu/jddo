@@ -5,13 +5,13 @@ import { Delete as DeleteIcon } from '@material-ui/icons'
 
 export type NoteProps = {
   note: types.Note
-} & types.OnDeleteButtonClick & BoxProps
+} & types.OnNoteClick & types.OnDeleteButtonClick & BoxProps
 
-export const Note = ({ note, onDeleteButtonClick, ...otherProps }: NoteProps) => {
+export const Note = ({ note, onNoteClick, onDeleteButtonClick, ...otherProps }: NoteProps) => {
   return (
     <Box width={1} p={0.15} {...otherProps}>
       <Card>
-        <CardContent>
+        <CardContent onClick={() => { onNoteClick && onNoteClick(note) }}>
           <Typography gutterBottom variant="h5" component="h2">
             {note.subject}
           </Typography>
