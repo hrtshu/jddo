@@ -38,6 +38,13 @@ const UPDATE_NOTE = gql`
     }
   }
 `
+const DELETE_NOTE = gql`
+  mutation DeleteNote($id: ID) {
+    deleteNote(input: {id: $id}) {
+      errors
+    }
+  }
+`
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,6 +72,7 @@ const Home = () => {
   const { loading: fetchingNotes, error: noteFetchError, data, refetch: refetchNotes } = useQuery(FETCH_NOTES)
   const [createNote, { loading: creatingNote }] = useMutation(CREATE_NOTE)
   const [updateNote, { loading: updatingNote }] = useMutation(UPDATE_NOTE)
+  const [deleteNote, { loading: deletingNote }] = useMutation(DELETE_NOTE)
 
   // useQueryで取得したメモデータをtypes.Noteでインスタンス化
   const notes: types.Note[] = data && data.notes ? data.notes.map((n: any) => new types.Note(n)) : []
@@ -124,9 +132,23 @@ const Home = () => {
     }
     setReadOnlyEditor(false)
   }
+  // メモ削除ロジックのコールバック用の関数
+  const onDeleteButtonClick = async (note: types.Note) => {
+    try {
+      const res = await deleteNote({ variables: { id: note.id } })
+      if (res && !res.errors) {
+        console.log("note deleted:", note.id)
+        await refetchNotes()
+      } else {
+        setError("メモの削除に失敗しました。再度試してください。")
+      }
+    } catch (e) {
+      setError("メモの削除に失敗しました。再度試してください。")
+    }
+  }
   // computed的な関数
   const loading = () => {
-    return fetchingNotes || creatingNote || updatingNote
+    return fetchingNotes || creatingNote || updatingNote || deletingNote
   }
   const fetchedNotes = () => {
     return !noteFetchError && !fetchingNotes
@@ -174,7 +196,7 @@ const Home = () => {
                 onNoteChange={onNewNoteChange}
                 readOnly={readOnlyNewNote} />
             </Box>
-            { fetchedNotes() ? <NoteList notes={notes} onNoteClick={onNoteClick} /> : "" }
+            { fetchedNotes() ? <NoteList notes={notes} onNoteClick={onNoteClick} onDeleteButtonClick={onDeleteButtonClick} /> : "" }
             <Snackbar open={errorOccurred()}>
               <Alert severity="error">
                 { errorMessage() }
