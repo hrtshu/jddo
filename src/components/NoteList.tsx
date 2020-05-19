@@ -6,14 +6,13 @@ import { Note } from '~/components'
 type NoteListCoreProps = {
   notes: types.Note[],
   onNoteClick?(note: types.Note): void
-}
+} & types.OnDeleteButtonClick
 
 type NoteListInnnerProps = NoteListCoreProps & WithWidth
 
 // WithWidthのwidthとBoxPropsのwidthが競合しないようにするためのインナークラス
 // ただし、NoteListへのBoxPropsはInnnerのBoxには引き継がれない
-const NoteListInner = withWidth()((props: NoteListInnnerProps) => {
-  const { notes, onNoteClick, width } = props
+const NoteListInner = withWidth()(({ notes, onNoteClick, onDeleteButtonClick, width }: NoteListInnnerProps) => {
 
   const getCols = () => {
     switch (true) {
@@ -38,7 +37,7 @@ const NoteListInner = withWidth()((props: NoteListInnnerProps) => {
         {notes.map(note => {
           return (
             <GridListTile key={note.id}>
-              <Note note={note} onClick={() => onNoteClick && onNoteClick(note)} />
+              <Note note={note} onClick={() => onNoteClick && onNoteClick(note)} onDeleteButtonClick={onDeleteButtonClick} />
             </GridListTile>
           )
         })}
@@ -50,11 +49,11 @@ const NoteListInner = withWidth()((props: NoteListInnnerProps) => {
 export type NoteListProps = NoteListCoreProps & BoxProps
 
 export const NoteList = (props: NoteListProps) => {
-  const { notes, onNoteClick, ...otherProps } = props
+  const { notes, onNoteClick, onDeleteButtonClick, ...otherProps } = props
 
   return (
     <Box {...otherProps}>
-      <NoteListInner notes={notes} onNoteClick={onNoteClick} />
+      <NoteListInner notes={notes} onNoteClick={onNoteClick} onDeleteButtonClick={onDeleteButtonClick} />
     </Box>
   )
 }
