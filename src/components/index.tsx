@@ -1,9 +1,11 @@
+export type { NoteProps } from './Note'
 export type { EditableNoteProps } from './EditableNote'
 export type { NewNoteProps } from './NewNote'
 export type { NoteListProps } from './NoteList'
 export type { AppBarProps } from './AppBar'
 export type { ModalNoteEditorProps } from './ModalNoteEditor'
 
+export { Note } from './Note'
 export { EditableNote } from './EditableNote'
 export { NewNote } from './NewNote'
 export { NoteList } from './NoteList'
