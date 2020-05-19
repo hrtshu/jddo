@@ -35,9 +35,9 @@ const NoteListInner = withWidth()((props: NoteListInnnerProps) => {
   return (
     <Box>
       <GridList cols={getCols()} cellHeight="auto" spacing={15}>
-        {notes.map((note, idx) => {
+        {notes.map(note => {
           return (
-            <GridListTile key={idx}> {/* TODO keyをnote.idに変える */}
+            <GridListTile key={note.id}>
               <Note note={note} onClick={() => onNoteClick && onNoteClick(note)} />
             </GridListTile>
           )
