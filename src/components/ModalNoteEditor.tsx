@@ -1,6 +1,6 @@
 import { Box, makeStyles, createStyles, Modal, ModalProps } from '@material-ui/core'
 import * as types from '~/types'
-import { Note } from '~/components'
+import { EditableNote } from '~/components'
 
 export type ModalNoteEditorProps = {
   open: ModalProps["open"],
@@ -22,7 +22,7 @@ export const ModalNoteEditor = ({ note, onComplete, onNoteChange, readOnly = fal
   return (
     <Modal className={classes.modal} open={open} onClose={() => {onComplete && onComplete()}}>
       <Box p={2} bgcolor="white">
-        <Note note={note} onNoteChange={onNoteChange} readOnly={readOnly} />
+        <EditableNote note={note} onNoteChange={onNoteChange} readOnly={readOnly} />
       </Box>
     </Modal>
   )

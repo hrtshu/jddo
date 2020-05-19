@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Box, BoxProps, Button } from '@material-ui/core'
 import * as types from '~/types'
-import { Note } from '~/components'
+import { EditableNote } from '~/components'
 
 export type NewNoteProps = types.NoteEditor & BoxProps
 
@@ -9,7 +9,7 @@ export const NewNote = ({ note, onComplete, onNoteChange, readOnly = false, ...b
   return (
     <Box {...boxProps}>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Note
+        <EditableNote
           width={1}
           mb={1}
           note={note}

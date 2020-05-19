@@ -2,11 +2,11 @@ import * as React from 'react'
 import { Box, BoxProps, TextField, Card, CardContent } from '@material-ui/core'
 import * as types from '~/types'
 
-export type NoteProps = {
+export type EditableNoteProps = {
   note: types.Note
 } & types.OnNoteChange & types.ReadOnly & BoxProps
 
-export const Note = ({ note, onNoteChange, readOnly = false, ...otherProps }: NoteProps) => {
+export const EditableNote = ({ note, onNoteChange, readOnly = false, ...otherProps }: EditableNoteProps) => {
   const onSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onNoteChange) {
       let newNote = note.clone()
@@ -47,4 +47,4 @@ export const Note = ({ note, onNoteChange, readOnly = false, ...otherProps }: No
   )
 }
 
-export default Note
+export default EditableNote

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Box, BoxProps, GridList, GridListTile, withWidth, WithWidth, isWidthUp } from '@material-ui/core'
 import * as types from '~/types'
-import { Note } from '~/components'
+import { EditableNote } from '~/components'
 
 type NoteListCoreProps = {
   notes: types.Note[],
@@ -38,7 +38,7 @@ const NoteListInner = withWidth()((props: NoteListInnnerProps) => {
         {notes.map((note, idx) => {
           return (
             <GridListTile key={idx}> {/* TODO keyをnote.idに変える */}
-              <Note note={note} readOnly={true} onClick={() => onNoteClick && onNoteClick(note)} />
+              <EditableNote note={note} readOnly={true} onClick={() => onNoteClick && onNoteClick(note)} />
             </GridListTile>
           )
         })}
