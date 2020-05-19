@@ -1,4 +1,4 @@
-import { Box, makeStyles, createStyles, Modal, ModalProps } from '@material-ui/core'
+import { Box, makeStyles, createStyles, Modal, ModalProps, Grow } from '@material-ui/core'
 import * as types from '~/types'
 import { EditableNote } from '~/components'
 
@@ -13,6 +13,9 @@ const useStyles = makeStyles(() =>
       alignItems: 'center',
       justifyContent: 'center',
     },
+    modalInner: {
+      outline: 0,
+    },
   }),
 )
 
@@ -21,9 +24,11 @@ export const ModalNoteEditor = ({ note, onComplete, onNoteChange, readOnly = fal
 
   return (
     <Modal className={classes.modal} open={open} onClose={() => {onComplete && onComplete()}}>
-      <Box p={2} bgcolor="white">
-        <EditableNote note={note} onNoteChange={onNoteChange} readOnly={readOnly} />
-      </Box>
+      <Grow in={open}>
+        <Box p={0.15} className={classes.modalInner}>
+          <EditableNote note={note} onNoteChange={onNoteChange} readOnly={readOnly} />
+        </Box>
+      </Grow>
     </Modal>
   )
 }
