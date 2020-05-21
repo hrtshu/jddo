@@ -23,13 +23,13 @@ export const AppBar = (props: AppBarProps) => {
   return (
     <MuiAppBar {...otherProps} >
       <Toolbar>
-        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+        <IconButton edge="start" className={classes.menuButton} color="secondary" aria-label="menu">
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant="h6" className={classes.title} color="secondary">
           JDDO
         </Typography>
-        { loading ? <CircularProgress size={30} color="secondary" /> : <DoneIcon /> }
+        { loading ? <CircularProgress size={30} color="secondary" /> : <DoneIcon color="secondary" /> }
       </Toolbar>
     </MuiAppBar>
   )
