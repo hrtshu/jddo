@@ -7,6 +7,18 @@ export type NoteProps = {
   note: types.Note
 } & types.OnNoteClick & types.OnDeleteButtonClick & BoxProps
 
+function convertNewlineToBr(text: string) {
+  var regex = /(\n)/g
+  return text.split(regex).map(function (line) {
+      if (line.match(regex)) {
+          return React.createElement('br')
+      }
+      else {
+          return line
+      }
+  })
+}
+
 export const Note = ({ note, onNoteClick, onDeleteButtonClick, ...otherProps }: NoteProps) => {
   return (
     <Box width={1} p={0.15} {...otherProps}>
@@ -15,8 +27,8 @@ export const Note = ({ note, onNoteClick, onDeleteButtonClick, ...otherProps }: 
           <Typography gutterBottom variant="h5" component="h2">
             {note.subject}
           </Typography>
-          <Typography variant="body1" component="p"> {/* TODO 改行が反映されない問題 */}
-            {note.body}
+          <Typography variant="body1" component="p">
+            {convertNewlineToBr(note.body)}
           </Typography>
         </CardContent>
         <CardActions>
